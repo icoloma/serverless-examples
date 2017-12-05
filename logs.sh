@@ -1,0 +1,1 @@
+gcloud alpha functions logs read generateThumbnail
