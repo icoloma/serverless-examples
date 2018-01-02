@@ -3,13 +3,18 @@ const os = require('os');
 const gcs = require('@google-cloud/storage')();
 const spawn = require('child-process-promise').spawn;
 
-// This example is available at 
-// https://cloud.google.com/functions/docs/tutorials/imagemagick
-// https://github.com/firebase/functions-samples/blob/master/generate-thumbnail/functions/index.js
+//
+// Detects a nw image uploaded to /uploads, scales it down 
+// and saves the result to /thumbnails
+//
 exports.generateThumbnail = (event) => {
   const { name, contentType, resourceState, bucket } = event.data;
 
-  if (!contentType.startsWith('image/') || !name.startsWith('uploads/') || resourceState === 'not_exists') {
+  if (
+    !contentType.startsWith('image/') || 
+    !name.startsWith('uploads/') || 
+    resourceState === 'not_exists'
+  ) {
     console.log(`File is either a thumbnail, not an image, or is being deleted/moved: name=${name}, state=${resourceState}`);
     return Promise.resolve();
   } else {
@@ -33,13 +38,15 @@ exports.generateThumbnail = (event) => {
       console.log('Thumbnail created at', tempLocalThumbFile);
       return gcsBucket.upload(tempLocalThumbFile, { 
         destination: thumbnailName, 
+        public: true, 
         metadata: { 
-          contentType: 
-          contentType 
+          contentType: contentType
         }
       });
     }).then(() => {
-      console.log(`Thumbnail uploaded to Storage at ${thumbnailName}`);
+      console.log(`Thumbnail uploaded to ${thumbnailName} and removed from uploads`);
+      console.log(`Open http://storage.googleapis.com/icoloma42-functions/${thumbnailName}`)
+      return gcsFile.delete();
     });
   }
 }
