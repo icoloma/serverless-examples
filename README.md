@@ -28,7 +28,10 @@ gcloud beta functions deploy generateThumbnail --stage-bucket icoloma42-test --t
 gsutil cp google-self-driving-bike.jpg gs://icoloma42-functions/uploads/
 
 # Open the original image and thumbnail in the browser
- google-chrome --incognito google-self-driving-bike.jpg http://storage.googleapis.com/icoloma42-functions/thumbnails/google-self-driving-bike.jpg
+google-chrome --incognito google-self-driving-bike.jpg http://storage.googleapis.com/icoloma42-functions/thumbnails/google-self-driving-bike.jpg
+
+# Open the trigger and review in the console
+xdg-open https://console.cloud.google.com/functions/list
 
 # (optional) see the logs
 gcloud logging read projects/icoloma-42/logs/cloudfunctions.googleapis.com%2Fcloud-functions
