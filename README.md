@@ -20,7 +20,7 @@ gsutil rm gs://icoloma42-functions/thumbnails/google-self-driving-bike.jpg
 watch gsutil ls -R gs://icoloma42-functions/
 
 # Connect the function to the bucket
-gcloud beta functions deploy generateThumbnail --stage-bucket icoloma42-test --trigger-bucket icoloma42-functions 
+gcloud functions deploy generateThumbnail --runtime nodejs8 --stage-bucket icoloma42-test --trigger-bucket icoloma42-functions 
 
 # (While running) Review the function in index.js in an editor
 
